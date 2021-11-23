@@ -1,6 +1,6 @@
 """The program read one of 3 dataset and then computes the optimal selection of shares
 that will provide the return on investment. It uses the so-called knapsack algorithm to
-compute this optimal invetsment"""
+compute this optimal investment"""
 
 import time
 import itertools

@@ -1,3 +1,5 @@
+"""The program read the dataset below and computes the profit for all possible set of shares"""
+
 import time
 import itertools
 
@@ -35,6 +37,9 @@ for share in shares:
 
 start_time = time.time()
 bestProfit = 0
+"""For a set of N shares there are 2**N  possible different subsets"""
+"""use itertools compress to select the subset elements and sum for a faster addition of share benefit"""
+"""the selection mask (binary value) needs to have SHARENUM bits to get a correct result."""
 for i in range(0, 2**SHARENUM):
     profit = sum(itertools.compress(earnings, map(int, bin(i)[2:][:].zfill(SHARENUM))))
     if profit >= bestProfit:
@@ -47,6 +52,9 @@ for i in range(0, 2**SHARENUM):
 end_time = time.time()
 elapsed_time = end_time - start_time
 print("Elapsed time iterating the main loop:", elapsed_time)
+
+
+"""Format and print results"""
 
 print("Investment:", sum(itertools.compress(shares_values, map(int, bin(bestRank)[2:][:].zfill(SHARENUM)))))
 print("Max profit:", bestProfit / 100)
