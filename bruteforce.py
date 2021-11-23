@@ -1,79 +1,57 @@
-import time, itertools
+import time
+import itertools
 
-SHARES = [[20 , 5],
-[30 , 10],
-[50 , 15],
-[70 , 20],
-[60 , 17],
-[80 , 25],
-[22 , 7],
-[26 , 11],
-[48 , 13],
-[34 , 27],
-[42 , 17],
-[110 ,  9],
-[38 , 23],
-[14 , 1],
-[18 , 3],
-[8 , 8],
-[4 , 12],
-[10 , 14],
-[24  , 21],
-[114 , 18]]           
+shares = [['Action_1', 20, 5],
+          ['Action_2', 30, 10],
+          ['Action_3', 50, 15],
+          ['Action_4', 70, 20],
+          ['Action_5', 60, 17],
+          ['Action_6', 80, 25],
+          ['Action_7', 22, 7],
+          ['Action_8', 26, 11],
+          ['Action_9', 48, 13],
+          ['Action_10', 34, 27],
+          ['Action_11', 42, 17],
+          ['Action_12', 110,  9],
+          ['Action_13', 38, 23],
+          ['Action_14', 14, 1],
+          ['Action_15', 18, 3],
+          ['Action_16', 8, 8],
+          ['Action_17', 4, 12],
+          ['Action_18', 10, 14],
+          ['Action_19', 24, 21],
+          ['Action_20', 114, 18]]
 
-SHARES_VALUES = [share[0] for share in SHARES]
-SORTED_SHARES_VALUES = sorted(SHARES_VALUES)
-print(SHARES_VALUES)
+shares_values = [share[1] for share in shares]
 
-
-
-SORTED_SHARES_BENEFIT = sorted(SHARES, key=lambda field: field[1])
-
-EARNINGS = []
+MAXINVESTMENT = 500
+SHARENUM = len(shares)
+print("Number of shares:", SHARENUM)
+earnings = []
 profits = []
 
-for SHARE in SHARES:
-     EARNINGS.append(SHARE[0] * SHARE[1])
+for share in shares:
+    earnings.append(share[1] * share[2])
 
 start_time = time.time()
 bestProfit = 0
-for i in range(0, 2**20):
-    profit = sum(itertools.compress(EARNINGS, map(int,bin(i)[2:][:].zfill(20))))
+for i in range(0, 2**SHARENUM):
+    profit = sum(itertools.compress(earnings, map(int, bin(i)[2:][:].zfill(SHARENUM))))
     if profit >= bestProfit:
-        investment = sum(itertools.compress(SHARES_VALUES, map(int,bin(i)[2:][:].zfill(20))))
-        if investment <= 500:
-#            print(investment,bestProfit,profit)
+        investment = sum(itertools.compress(shares_values, map(int, bin(i)[2:][:].zfill(SHARENUM))))
+        if investment <= MAXINVESTMENT:
             bestProfit = profit
-            bestCandidate= bin(i)[2:][:].zfill(20)
+            bestCandidate = bin(i)[2:][:].zfill(SHARENUM)
             bestRank = i
             profits.append(profit)
 end_time = time.time()
 elapsed_time = end_time - start_time
 print("Elapsed time iterating the main loop:", elapsed_time)
 
-print("Max profit:", bestProfit)
-print("Rank=", bestRank,"Selection:",bestCandidate)
-print(list(itertools.compress(SHARES_VALUES, map(int,bin(bestRank)[2:][:].zfill(20)))))
-print("Investment:",sum(itertools.compress(SHARES_VALUES, map(int,bin(bestRank)[2:][:].zfill(20)))))
-print(list(itertools.compress(SHARES, map(int,bin(bestRank)[2:][:].zfill(20)))))
+print("Investment:", sum(itertools.compress(shares_values, map(int, bin(bestRank)[2:][:].zfill(SHARENUM)))))
+print("Max profit:", bestProfit / 100)
 
-
-"""
-print("Profit table Length: ",len(profits))
-sweetSpot = max(profits)
-print(sweetSpot)
-print(profits.index(sweetSpot))
-
-profit = 0
-investment = 0
-print("The winning selection:\n")
-for j,digit in enumerate(bin(640663)[2:][:]):
-    profit += int(digit) * EARNINGS[j]
-    investment += int(digit) * SHARES[j][0]
-    if digit == '1':
-        print("Share: ",j," \n")
-        print(investment)
-print("PROFIT = ", profit)
-print("INVESTMENT = ", investment)
-
-"""
+print("\n")
+for share in (list(itertools.compress(shares, map(int, bin(bestRank)[2:][:].zfill(SHARENUM))))):
+    print('{0:<10s}{1:<7s}{2:<6.2f}{3:<7s}{4:<10.6f}'.
+          format(share[0], "  Value:", share[1], "  Profit:", share[1] * share[2]))
