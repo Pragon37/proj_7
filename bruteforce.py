@@ -30,7 +30,6 @@ MAXINVESTMENT = 500
 SHARENUM = len(shares)
 print("Number of shares:", SHARENUM)
 earnings = []
-profits = []
 
 for share in shares:
     earnings.append(share[1] * share[2])
@@ -48,7 +47,6 @@ for i in range(0, 2**SHARENUM):
             bestProfit = profit
             bestCandidate = bin(i)[2:][:].zfill(SHARENUM)
             bestRank = i
-            profits.append(profit)
 end_time = time.time()
 elapsed_time = end_time - start_time
 print("Elapsed time iterating the main loop:", elapsed_time)
